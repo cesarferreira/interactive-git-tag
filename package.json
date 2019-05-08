@@ -1,0 +1,38 @@
+{
+  "name": "git-tag-cli",
+  "version": "0.0.0",
+  "description": "Tool that helps with your git tagging",
+  "author": {
+    "name": "Cesar Ferreira",
+    "email": "cesar.manuel.ferreira@gmail.com",
+    "url": "http://cesarferreira.com"
+  },
+  "scripts": {
+    "start": "node example.js",
+    "lint": "eslint src/**/*",
+    "test": "xo"
+  },
+  "bin": {
+    "git-tag-cli": "cli.js"
+  },
+  "main": "cli.js",
+  "keywords": [],
+  "dependencies": {
+    "chalk": "^2.4.2",
+    "meow": "^5.0.0",
+    "update-notifier": "^2.5.0"
+  },
+  "devDependencies": {
+    "eslint": "^5.16.0",
+    "xo": "^0.24.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cesarferreira/git-tag-cli.git"
+  },
+  "bugs": {
+    "url": "https://github.com/cesarferreira/git-tag-cli/issues"
+  },
+  "homepage": "https://github.com/cesarferreira/git-tag-cli#readme",
+  "license": "MIT"
+}
