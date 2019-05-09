@@ -35,6 +35,7 @@ const self = module.exports = {
         fs.readFileSync(filePath, 'utf-8');
     },
     infoAboutTag: (tag) => semver.parse(tag),
+    getCurrentFolderName: () => [...process.cwd().split("/")].reverse()[0],
     getLatestTag: async() => {
         try {
             return await getLatestTag()

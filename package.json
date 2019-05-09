@@ -20,6 +20,7 @@
     "dependencies": {
         "chalk": "^2.4.2",
         "git-tag": "^0.2.0",
+        "inquirer": "^6.3.1",
         "meow": "^5.0.0",
         "semver": "^6.0.0",
         "update-notifier": "^2.5.0"
