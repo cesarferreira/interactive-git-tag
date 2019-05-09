@@ -6,18 +6,21 @@ const chalk = require('chalk');
 const Utils = require('./utils/utils');
 const log = console.log;
 const ui = require('./utils/ui');
+const ora = require('ora');
 
 const LatestTagTask = require('./tasks/latest_tag_task');
 
 async function areYouSureYouWantToPush(newTag) {
     const answersConfirmation = await ui.askForConfirmation(newTag)
 
+    log("")
     if (answersConfirmation['confirm']) {
+        const spinner = ora(`Pushing ${chalk.bold.green(newTag)}`).start();
         try {
             await Utils.pushNewTag(newTag, newTag) // TODO a message?
-            ui.printTagPushSuccess(newTag)
+            spinner.succeed(ui.tagPushSuccessMessage(newTag))
         } catch (error) {
-            log(error)
+            spinner.fail(error)
         }
     } else {
         ui.failsToConfirm()

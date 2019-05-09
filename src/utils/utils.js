@@ -6,7 +6,7 @@ const Chalk = require('chalk');
 const log = console.log;
 const semver = require('semver')
 
-var gitTag = require('git-tag')({ localOnly: true, dir: `${__dirname}/.git` })
+var gitTag = require('git-tag')({ localOnly: false, dir: `${process.cwd()}/.git` })
 
 Array.prototype.subarray = function(start, end) {
     if (!end) { end = -1; }

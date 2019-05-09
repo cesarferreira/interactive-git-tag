@@ -7,6 +7,7 @@ const log = console.log;
 const inquirer = require('inquirer');
 const prettyVersionDiff = require('./pretty-version-diff');
 const version = require('./version');
+const Utils = require('./utils');
 
 // Main code //
 const self = module.exports = {
@@ -22,12 +23,8 @@ const self = module.exports = {
     failsToConfirm: () => {
         log(`\n${chalk.bold.yellow("Thanks for wasting my time 😪")}\n`);
     },
-    printAbout: () => {
-        log(`\n ${chalk.bold.white('Made with ❤ by')} ${chalk.bold.green('http://cesarferreira.com')}`);
-    },
-    printTagPushSuccess: async(newVersion) => {
-        log(`\n ${chalk.bold.white(Utils.getCurrentFolderName())} ${chalk.bold.green(newVersion)} published 🎉`);
-    },
+    printAbout: () => log(`\n ${chalk.bold.white('Made with ❤ by')} ${chalk.bold.green('http://cesarferreira.com')}`),
+    tagPushSuccessMessage: (newVersion) => `${chalk.bold.white(Utils.getCurrentFolderName())} ${chalk.bold.green(newVersion)} published 🎉`,
     askForValidNewTag: async(oldVersion) => {
         const prompts = [{
                 type: 'list',
