@@ -19,15 +19,11 @@ yarn add git-tag-cli
 
 ```
 Usage
+    $ tag <version>
 
-   $ git-tag-cli <command> <params>
-
-   $ git-tag-cli sample <param>             # Uses the <PARAM>
+    Version can be:
+      patch | minor | major | prepatch | preminor | premajor | prerelease | 1.2.3
    
- Examples
-
-   $ git-tag-cli sample TEST                # Uses the TEST
-   $ git-tag-cli sample YOLO                # Uses the YOLO
 ```
 
 ## Created by

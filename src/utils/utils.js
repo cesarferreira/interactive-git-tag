@@ -19,7 +19,6 @@ function getLatestTag() {
         gitTag.latest((err, res) => {
             if (err) reject(err)
             else resolve(res)
-
         })
     })
 }

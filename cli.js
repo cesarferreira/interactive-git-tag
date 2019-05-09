@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+
 'use strict';
 
 const meow = require('meow');
@@ -23,17 +24,15 @@ Usage
    $ git-tag-cli sample YOLO                # Uses the YOLO
    $ git-tag-cli other YOLO                 # Uses the YOLO
    $ git-tag-cli another YOLO               # Uses the YOLO
-`,
-  {
+`, {
     alias: {
-      v: 'version'
+        v: 'version'
     },
     boolean: ['version']
-  }
-);
+});
 
-if (cli.input.length > 0) {
-	router.init(cli.input, cli.flags);
-} else {
-	cli.showHelp(2);
-}
+// if (cli.input.length > 0) {
+router.init(cli.input, cli.flags);
+// } else {
+// cli.showHelp(2);
+// }
