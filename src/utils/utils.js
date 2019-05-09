@@ -5,19 +5,23 @@
 const Chalk = require('chalk');
 const log = console.log;
 const fs = require('fs');
-const remoteGitTags = require('remote-git-tags');
-const semverSort = require('semver-sort');
-const origin = require('remote-origin-url');
 const semver = require('semver')
 
-function sanitizeRemote(remote) {
-    if (!remote.includes('git@')) return remote
-    return 'github.com/' + remote.split(':')[1].replace('.git', '')
-}
+var gitTag = require('git-tag')({ localOnly: true, dir: `${__dirname}/.git` })
 
 Array.prototype.subarray = function(start, end) {
     if (!end) { end = -1; }
     return this.slice(start, this.length + 1 - (end * -1));
+}
+
+function getLatestTag() {
+    return new Promise((resolve, reject) => {
+        gitTag.latest((err, res) => {
+            if (err) reject(err)
+            else resolve(res)
+
+        })
+    })
 }
 
 // Main code //
@@ -31,23 +35,12 @@ const self = module.exports = {
     readFile: (content, filePath) => {
         fs.readFileSync(filePath, 'utf-8');
     },
-    infoAbout: (version) => {
-        return semver.parse(version)
-    },
+    infoAboutTag: (tag) => semver.parse(tag),
     getLatestTag: async() => {
-        let url = await origin();
-        log(url)
-        const remote = sanitizeRemote(url)
-        log(remote)
-        const tags = await remoteGitTags(remote)
-        log(tags)
-        let versions = [...tags.keys()];
-
-        if (versions.length == 0) {
+        try {
+            return await getLatestTag()
+        } catch (error) {
             return '0.0.0'
-        } else {
-            semverSort.desc(versions);
-            return versions[0]
         }
     }
 };

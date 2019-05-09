@@ -19,11 +19,9 @@
     "keywords": [],
     "dependencies": {
         "chalk": "^2.4.2",
+        "git-tag": "^0.2.0",
         "meow": "^5.0.0",
-        "remote-git-tags": "^2.0.0",
-        "remote-origin-url": "^2.0.0",
         "semver": "^6.0.0",
-        "semver-sort": "0.0.4",
         "update-notifier": "^2.5.0"
     },
     "devDependencies": {
