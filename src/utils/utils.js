@@ -36,8 +36,11 @@ const self = module.exports = {
     },
     getLatestTag: async() => {
         let url = await origin();
+        log(url)
         const remote = sanitizeRemote(url)
+        log(remote)
         const tags = await remoteGitTags(remote)
+        log(tags)
         let versions = [...tags.keys()];
 
         if (versions.length == 0) {

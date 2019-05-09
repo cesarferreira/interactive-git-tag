@@ -27,9 +27,13 @@ const self = module.exports = {
             case 'patch':
                 // LatestTagTask.init(params);
 
-                log(semver.inc('1.2.3', 'prerelease', 'beta'))
-                log(semver.major('1.2.3'))
-                log(Utils.infoAbout('1.2.3'))
+
+                (async() => {
+                    var latest = await Utils.getLatestTag()
+                    log(semver.inc(latest, 'major'))
+                        // log(semver.major(latest))
+                    log(Utils.infoAbout(latest))
+                })();
 
 
                 break;
