@@ -2,7 +2,7 @@
 > Tool that helps with your git tagging
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/cesarferreira/assets/master/images/screenshot_terminal_hello_world.png" width="100%" />
+  <img src="extra/ss.png" width="100%" />
 </p>
 
 [![Build Status](https://travis-ci.org/cesarferreira/git-tag-cli.svg?branch=master)](https://travis-ci.org/cesarferreira/git-tag-cli)
@@ -12,7 +12,7 @@
 ## Install
 
 ```sh
-yarn add git-tag-cli
+npm install -g git-tag-cli
 ```
 
 ## Usage
@@ -22,7 +22,7 @@ Usage
     $ tag <version>
 
     Version can be:
-      patch | minor | major | prepatch | preminor | premajor | prerelease | 1.2.3
+      patch | minor | major | prepatch | preminor | premajor | prerelease
    
 ```
 
