@@ -39,7 +39,12 @@ const self = module.exports = {
         const remote = sanitizeRemote(url)
         const tags = await remoteGitTags(remote)
         let versions = [...tags.keys()];
-        semverSort.desc(versions);
-        return versions[0]
+
+        if (versions.length == 0) {
+            return '0.0.0'
+        } else {
+            semverSort.desc(versions);
+            return versions[0]
+        }
     }
 };
