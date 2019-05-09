@@ -4,7 +4,6 @@
 
 const Chalk = require('chalk');
 const log = console.log;
-const fs = require('fs');
 const semver = require('semver')
 
 var gitTag = require('git-tag')({ localOnly: true, dir: `${__dirname}/.git` })
@@ -23,17 +22,17 @@ function getLatestTag() {
     })
 }
 
+function pushNewTag(newTag, message) {
+    return new Promise((resolve, reject) => {
+        gitTag.create(newTag, message, (err, res) => {
+            if (err) reject(err)
+            else resolve(res)
+        })
+    })
+}
+
 // Main code //
 const self = module.exports = {
-    isEmpty: obj => {
-        return Object.keys(obj).length === 0;
-    },
-    saveToFile: (content, filePath) => {
-        fs.writeFileSync(filePath, content, 'utf-8');
-    },
-    readFile: (content, filePath) => {
-        fs.readFileSync(filePath, 'utf-8');
-    },
     infoAboutTag: (tag) => semver.parse(tag),
     getCurrentFolderName: () => [...process.cwd().split("/")].reverse()[0],
     getLatestTag: async() => {
@@ -42,5 +41,7 @@ const self = module.exports = {
         } catch (error) {
             return '0.0.0'
         }
-    }
+    },
+    pushNewTag: async(newVersion, message) => await pushNewTag(newVersion, message)
+
 };

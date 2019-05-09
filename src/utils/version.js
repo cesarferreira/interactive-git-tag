@@ -1,4 +1,4 @@
-'use strict';
+// 'use strict';
 const semver = require('semver');
 
 class Version {
