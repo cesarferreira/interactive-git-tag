@@ -1,5 +1,7 @@
-# git-tag-cli
-> Tool that helps with your git tagging by suggesting names
+<!-- # git-tag-cli -->
+# Interactive Git Tag
+
+> Interactive tool that helps with your git tagging by suggesting versions
 
 <p align="center">
   <img src="extra/animation.gif" width="100%" />
@@ -36,8 +38,21 @@ Usage
     
 ```
 
-## Created by
-[Cesar Ferreira](https://cesarferreira.com)
+## Interactive UI
+
+Run `tag` without arguments to launch the interactive UI that guides you through pushing a new tag.
+
+<img src="extra/ss.png" width="100%">
+
+
+## Shoutout
+
+Inspired by the amazing [sindresorhus](https://github.com/sindresorhus)'s [np](https://github.com/sindresorhus/np) - A better `npm publish` tool
+
+## Maintainers
+
+- [Cesar Ferreira](http://cesarferreira.com)
 
 ## License
-MIT © [Cesar Ferreira](http://cesarferreira.com)
+
+MIT

@@ -12,18 +12,20 @@ updateNotifier({ pkg }).notify();
 const cli = meow(`
 Usage
 
-   $ git-tag-cli <command> <params>
+    $ tag <version>
 
-   $ git-tag-cli sample <param>             # Uses the <PARAM>
-   $ git-tag-cli other <param>              # Other the <PARAM>
-   $ git-tag-cli another <param>            # Another the <PARAM>
-   
+    Version can be:
+      patch | minor | major | prepatch | preminor | premajor | prerelease
+ 
  Examples
 
-   $ git-tag-cli sample TEST                # Uses the TEST
-   $ git-tag-cli sample YOLO                # Uses the YOLO
-   $ git-tag-cli other YOLO                 # Uses the YOLO
-   $ git-tag-cli another YOLO               # Uses the YOLO
+    $ tag
+    $ tag patch
+    $ tag major
+    $ tag prepatch
+    $ tag premajor
+    $ tag prerelease
+    
 `, {
     alias: {
         v: 'version'
@@ -31,8 +33,8 @@ Usage
     boolean: ['version']
 });
 
-// if (cli.input.length > 0) {
-router.init(cli.input, cli.flags);
-// } else {
-// cli.showHelp(2);
-// }
+if (cli.input.length > 0 && cli.input[0] == "help") {
+    cli.showHelp(2);
+} else {
+    router.init(cli.input, cli.flags);
+}

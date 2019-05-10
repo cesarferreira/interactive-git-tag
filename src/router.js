@@ -1,14 +1,11 @@
 #!/usr/bin/env node
 
-// 'use strict';
-
 const chalk = require('chalk');
 const Utils = require('./utils/utils');
 const log = console.log;
 const ui = require('./utils/ui');
 const ora = require('ora');
-
-const LatestTagTask = require('./tasks/latest_tag_task');
+const pkg = require('../package.json');
 
 async function areYouSureYouWantToPush(oldVersion, newTag, message) {
     const answersConfirmation = await ui.askForConfirmation(oldVersion, newTag)
@@ -35,9 +32,6 @@ const self = module.exports = {
         const params = input.subarray(1, input.length);
 
         switch (command.toLowerCase()) {
-            case 'latest':
-                LatestTagTask.init(params);
-                break;
             case 'major':
             case 'minor':
             case 'patch':
@@ -50,25 +44,17 @@ const self = module.exports = {
                     const newTag = await Utils.getNextVersionFor(oldTag, command.toLowerCase())
                     await areYouSureYouWantToPush(oldTag, newTag, newTag)
                 })();
-
                 break;
             case 'about':
                 ui.printAbout()
                 break;
-            case 'help':
-                log(`HELP TODO`);
-                break;
             case 'version':
-                log(`HELP TODO`);
+                log(`Current version is ${Chalk.green(pkg.version)}`)
                 break;
             default:
-
                 (async() => {
-
                     var oldVersion = await Utils.getLatestTag()
-
                     ui.initialPrompt(oldVersion)
-
                     const { newTag, message } = await ui.askForValidNewTag(oldVersion);
                     await areYouSureYouWantToPush(oldVersion, newTag, message)
                 })()
