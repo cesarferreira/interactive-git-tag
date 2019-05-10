@@ -1,6 +1,6 @@
 {
     "name": "git-tag-cli",
-    "version": "0.2.0",
+    "version": "0.3.0",
     "description": "Tool that helps with your git tagging",
     "author": {
         "name": "Cesar Ferreira",
