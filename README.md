@@ -12,18 +12,28 @@
 ## Install
 
 ```sh
-npm install -g git-tag-cli
+$ npm install -g git-tag-cli
 ```
 
 ## Usage
 
 ```
 Usage
+
     $ tag <version>
 
     Version can be:
       patch | minor | major | prepatch | preminor | premajor | prerelease
-   
+ 
+ Examples
+
+    $ tag
+    $ tag patch
+    $ tag major
+    $ tag prepatch
+    $ tag premajor
+    $ tag prerelease
+    
 ```
 
 ## Created by
