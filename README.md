@@ -2,7 +2,7 @@
 > Tool that helps with your git tagging by suggesting names
 
 <p align="center">
-  <img src="extra/ss.png" width="100%" />
+  <img src="extra/animation.gif" width="100%" />
 </p>
 
 [![Build Status](https://travis-ci.org/cesarferreira/git-tag-cli.svg?branch=master)](https://travis-ci.org/cesarferreira/git-tag-cli)
