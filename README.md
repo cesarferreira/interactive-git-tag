@@ -1,5 +1,5 @@
 <!-- # git-tag-cli -->
-# Interactive Git Tag
+# Interactive Git Tagger
 
 > Interactive tool that helps with your git tagging by suggesting versions
 
