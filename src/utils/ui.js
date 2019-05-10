@@ -12,11 +12,11 @@ const Utils = require('./utils');
 // Main code //
 const self = module.exports = {
 
-    askForConfirmation: async(newVersion) => {
+    askForConfirmation: async(oldVersion, newVersion) => {
         return inquirer.prompt([{
             type: 'confirm',
             name: 'confirm',
-            message: `You sure you want to push ${chalk.bold.green(newVersion)} ?`,
+            message: `Will bump from ${chalk.bold.green(oldVersion)} to ${chalk.bold.green(newVersion)}. Continue?`,
             default: true
         }]);
     },

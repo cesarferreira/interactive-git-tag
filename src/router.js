@@ -10,8 +10,8 @@ const ora = require('ora');
 
 const LatestTagTask = require('./tasks/latest_tag_task');
 
-async function areYouSureYouWantToPush(newTag, message) {
-    const answersConfirmation = await ui.askForConfirmation(newTag)
+async function areYouSureYouWantToPush(oldVersion, newTag, message) {
+    const answersConfirmation = await ui.askForConfirmation(oldVersion, newTag)
 
     log("")
     if (answersConfirmation['confirm']) {
@@ -25,11 +25,6 @@ async function areYouSureYouWantToPush(newTag, message) {
     } else {
         ui.failsToConfirm()
     }
-}
-
-async function getNextVersionFor(semVerType) {
-    const latest = await Utils.getLatestTag();
-    return version(latest).getNewVersionFrom(semVerType)
 }
 
 // Main code //
@@ -51,8 +46,9 @@ const self = module.exports = {
             case 'premajor':
             case 'prerelease':
                 (async() => {
-                    const nextOne = await getNextVersionFor(command.toLowerCase())
-                    areYouSureYouWantToPush(nextOne)
+                    const oldTag = await Utils.getLatestTag()
+                    const newTag = await Utils.getNextVersionFor(oldTag, command.toLowerCase())
+                    await areYouSureYouWantToPush(oldTag, newTag, newTag)
                 })();
 
                 break;
@@ -69,11 +65,12 @@ const self = module.exports = {
 
                 (async() => {
 
-                    var latestTag = await Utils.getLatestTag()
-                    ui.initialPrompt(latestTag)
+                    var oldVersion = await Utils.getLatestTag()
 
-                    const { newTag, message } = await ui.askForValidNewTag(latestTag);
-                    await areYouSureYouWantToPush(newTag, message)
+                    ui.initialPrompt(oldVersion)
+
+                    const { newTag, message } = await ui.askForValidNewTag(oldVersion);
+                    await areYouSureYouWantToPush(oldVersion, newTag, message)
                 })()
         }
     }

@@ -5,6 +5,7 @@
 const Chalk = require('chalk');
 const log = console.log;
 const semver = require('semver')
+const version = require('./version');
 
 var gitTag = require('git-tag')({ localOnly: false, dir: `${process.cwd()}/.git` })
 
@@ -35,6 +36,9 @@ function pushNewTag(newTag, message) {
 const self = module.exports = {
     infoAboutTag: (tag) => semver.parse(tag),
     getCurrentFolderName: () => [...process.cwd().split("/")].reverse()[0],
+    getNextVersionFor: async(oldVersion, semVerType) => {
+        return version(oldVersion).getNewVersionFrom(semVerType)
+    },
     getLatestTag: async() => {
         try {
             return await getLatestTag()
