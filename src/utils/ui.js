@@ -24,6 +24,12 @@ const self = module.exports = {
         log(`\n${chalk.bold.yellow("Thanks for wasting my time 😪")}\n`);
     },
     printAbout: () => log(`\n ${chalk.bold.white('Made with ❤ by')} ${chalk.bold.green('http://cesarferreira.com')}`),
+    initialPrompt: (latestTag) => {
+        const currentFolderName = chalk.bold.magenta(Utils.getCurrentFolderName())
+        const currentVersion = chalk.dim(`(current: ${latestTag})`)
+        log(`\nTag a new version of ${currentFolderName} ${currentVersion}\n`)
+    },
+
     tagPushSuccessMessage: (newVersion) => `${chalk.bold.white(Utils.getCurrentFolderName())} ${chalk.bold.green(newVersion)} published 🎉`,
     askForValidNewTag: async(oldVersion) => {
         const prompts = [{
@@ -63,8 +69,20 @@ const self = module.exports = {
                     return true;
                 }
             }
+
         ]
 
-        return inquirer.prompt(prompts);
+        var answers = await inquirer.prompt(prompts);
+        var messageAnswers = await inquirer.prompt([{
+            type: 'input',
+            name: 'message',
+            message: `What message should the tag have`,
+            default: answers['version']
+        }]);
+
+        return {
+            newTag: answers['version'],
+            message: messageAnswers['message']
+        }
     }
 };

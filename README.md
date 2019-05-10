@@ -1,5 +1,5 @@
 # git-tag-cli
-> Tool that helps with your git tagging
+> Tool that helps with your git tagging by suggesting names
 
 <p align="center">
   <img src="extra/ss.png" width="100%" />
