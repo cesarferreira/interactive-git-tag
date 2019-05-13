@@ -1,5 +1,5 @@
-<!-- # git-tag-cli -->
-# Interactive Git Tagger
+<!-- # interactive-git-tag -->
+# Interactive git tag
 
 > Interactive tool that helps with your git tagging by suggesting versions
 
@@ -7,14 +7,14 @@
   <img src="extra/animation.gif" width="100%" />
 </p>
 
-[![Build Status](https://travis-ci.org/cesarferreira/git-tag-cli.svg?branch=master)](https://travis-ci.org/cesarferreira/git-tag-cli)
-[![npm](https://img.shields.io/npm/dt/git-tag-cli.svg)](https://www.npmjs.com/package/git-tag-cli)
-[![npm](https://img.shields.io/npm/v/git-tag-cli.svg)](https://www.npmjs.com/package/git-tag-cli)
+[![Build Status](https://travis-ci.org/cesarferreira/interactive-git-tag.svg?branch=master)](https://travis-ci.org/cesarferreira/interactive-git-tag)
+[![npm](https://img.shields.io/npm/dt/interactive-git-tag.svg)](https://www.npmjs.com/package/interactive-git-tag)
+[![npm](https://img.shields.io/npm/v/interactive-git-tag.svg)](https://www.npmjs.com/package/interactive-git-tag)
 
 ## Install
 
 ```sh
-$ npm install -g git-tag-cli
+$ npm install -g interactive-git-tag
 ```
 
 ## Usage

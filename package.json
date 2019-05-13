@@ -1,5 +1,5 @@
 {
-    "name": "git-tag-cli",
+    "name": "interactive-git-tag",
     "version": "0.3.0",
     "description": "Tool that helps with your git tagging",
     "author": {
@@ -32,11 +32,11 @@
     },
     "repository": {
         "type": "git",
-        "url": "https://github.com/cesarferreira/git-tag-cli.git"
+        "url": "https://github.com/cesarferreira/interactive-git-tag.git"
     },
     "bugs": {
-        "url": "https://github.com/cesarferreira/git-tag-cli/issues"
+        "url": "https://github.com/cesarferreira/interactive-git-tag/issues"
     },
-    "homepage": "https://github.com/cesarferreira/git-tag-cli#readme",
+    "homepage": "https://github.com/cesarferreira/interactive-git-tag#readme",
     "license": "MIT"
 }
