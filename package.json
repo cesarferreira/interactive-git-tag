@@ -24,10 +24,10 @@
         "meow": "^5.0.0",
         "ora": "^3.4.0",
         "semver": "^6.0.0",
-        "update-notifier": "^2.5.0"
+        "update-notifier": "^3.0.1"
     },
     "devDependencies": {
-        "eslint": "^5.16.0",
+        "eslint": "^6.0.1",
         "xo": "^0.24.0"
     },
     "repository": {
