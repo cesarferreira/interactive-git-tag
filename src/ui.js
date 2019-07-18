@@ -10,7 +10,7 @@ const version = require('./version');
 const Utils = require('./utils');
 
 // Main code //
-const self = module.exports = {
+module.exports = {
 
     askForConfirmation: async(oldVersion, newVersion) => {
         return inquirer.prompt([{
