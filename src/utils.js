@@ -80,14 +80,12 @@ const self = module.exports = {
         });
     },
     printCommitLog: async(repoUrl, oldTag, newTag) => {
-        // const latest = await git.latestTagOrFirstCommit();
-        // log(latest)
         const commitLog = await git.commitLogFromRevision(oldTag);
 
         if (!commitLog) {
             return {
                 hasCommits: false,
-                releaseNotes: () => {}
+                releaseNotes: ""
             };
         }
 
@@ -100,19 +98,9 @@ const self = module.exports = {
                 };
             });
 
-        const history = commits.map(commit => {
-            const commitMessage = self.linkifyIssues(repoUrl, commit.message);
-            const commitId = self.linkifyCommit(repoUrl, commit.id);
-            return `- ${commitMessage}  ${commitId}`;
-        }).join('\n');
-
-        const releaseNotes = nextTag => commits.map(commit =>
+        const releaseNotes = commits.map(commit =>
             `- ${commit.message}  ${commit.id}`
-        ).join('\n') + `\n\n${repoUrl}/compare/${oldTag}...${nextTag}`;
-
-        const commitRange = self.linkifyCommitRange(repoUrl, `${oldTag}...master`);
-
-        // log(`${chalk.bold('Commits:')}\n${history}\n\n${chalk.bold('Commit Range:')}\n${commitRange}\n`);
+        ).join('\n') + `\n\n${repoUrl}/compare/${oldTag}...${newTag}`;
 
         return {
             hasCommits: true,

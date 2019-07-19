@@ -40,7 +40,7 @@ async function createRelease(oldTag, newTag) {
         newTag,
         repoUrl,
         hasCommits,
-        releaseNotes: releaseNotes(newTag) //oldTag,
+        releaseNotes
     }
 
     await Utils.releaseTaskHelper(options)
