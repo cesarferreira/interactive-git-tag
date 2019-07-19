@@ -99,7 +99,7 @@ const self = module.exports = {
             });
 
         const releaseNotes = commits.map(commit =>
-            `- ${commit.message}  ${commit.id}`
+            `- ${commit.id} ${commit.message}`
         ).join('\n') + `\n\n${repoUrl}/compare/${oldTag}...${newTag}`;
 
         return {

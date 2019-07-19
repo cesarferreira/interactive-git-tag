@@ -65,9 +65,7 @@ module.exports = {
                     const oldTag = await Utils.getLatestTag()
                     const newTag = await Utils.getNextVersionFor(oldTag, command.toLowerCase())
                     const confirmed = await areYouSureYouWantToPush(oldTag, newTag, newTag)
-                    if (confirmed) {
-                        await createRelease(oldTag, newTag)
-                    }
+                    if (confirmed) await createRelease(oldTag, newTag)
                 })();
                 break;
             case 'about':
@@ -82,9 +80,7 @@ module.exports = {
                     ui.initialPrompt(oldTag)
                     const { newTag, message } = await ui.askForValidNewTag(oldTag);
                     const confirmed = await areYouSureYouWantToPush(oldTag, newTag, message)
-                    if (confirmed) {
-                        await createRelease(oldTag, newTag)
-                    }
+                    if (confirmed) await createRelease(oldTag, newTag)
                 })()
         }
     }
