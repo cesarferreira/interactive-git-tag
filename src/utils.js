@@ -8,6 +8,8 @@ const semver = require('semver')
 const version = require('./version');
 const terminalLink = require('terminal-link');
 const git = require('./git-util');
+const open = require('open');
+const newGithubReleaseUrl = require('./new-github-release-url');
 
 var gitTag = require('git-tag')({ localOnly: false, dir: `${process.cwd()}/.git` })
 
@@ -81,8 +83,7 @@ const self = module.exports = {
     printCommitLog: async(repoUrl) => {
         const latest = await git.latestTagOrFirstCommit();
         const commitLog = await git.commitLogFromRevision(latest);
-        log(latest)
-        log(commitLog)
+
         if (!commitLog) {
             return {
                 hasCommits: false,
@@ -111,12 +112,23 @@ const self = module.exports = {
 
         const commitRange = self.linkifyCommitRange(repoUrl, `${latest}...master`);
 
-        log(`${chalk.bold('Commits:')}\n${history}\n\n${chalk.bold('Commit Range:')}\n${commitRange}\n`);
+        // log(`${chalk.bold('Commits:')}\n${history}\n\n${chalk.bold('Commit Range:')}\n${commitRange}\n`);
 
         return {
             hasCommits: true,
             releaseNotes
         };
+    },
+
+    releaseTaskHelper: async(options) => {
+        const url = newGithubReleaseUrl({
+            repoUrl: options.repoUrl,
+            tag: options.newTag,
+            body: options.releaseNotes,
+            isPrerelease: version(options.newTag).isPrerelease()
+        });
+
+        await open(url);
     }
 
 };

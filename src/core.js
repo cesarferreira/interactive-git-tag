@@ -6,7 +6,6 @@ const log = console.log;
 const ui = require('./ui');
 const ora = require('ora');
 const pkg = require('../package.json');
-const releaseTaskHelper = require('./release-task-helper');
 const githubUrlFromGit = require('github-url-from-git');
 const gitRemoteOriginUrl = require('git-remote-origin-url');
 
@@ -17,14 +16,16 @@ async function areYouSureYouWantToPush(oldVersion, newTag, message) {
     if (answersConfirmation['confirm']) {
         const spinner = ora(`Pushing ${chalk.bold.green(newTag)}`).start();
         try {
-            // TODO DELETE ME
-            // await Utils.pushNewTag(newTag, message)
+            await Utils.pushNewTag(newTag, message)
             spinner.succeed(ui.tagPushSuccessMessage(newTag))
+            return true;
         } catch (error) {
             spinner.fail(error)
+            return false;
         }
     } else {
         ui.failsToConfirm()
+        return false;
     }
 }
 
@@ -42,11 +43,8 @@ async function createRelease(oldTag, newTag) {
         releaseNotes: theLog.releaseNotes(oldTag)
     }
 
-    // log(options.releaseNotes)
-    releaseTaskHelper(options)
+    await Utils.releaseTaskHelper(options)
 }
-
-
 
 // Main code //
 module.exports = {
@@ -66,45 +64,27 @@ module.exports = {
                 (async() => {
                     const oldTag = await Utils.getLatestTag()
                     const newTag = await Utils.getNextVersionFor(oldTag, command.toLowerCase())
-                    await areYouSureYouWantToPush(oldTag, newTag, newTag)
+                    const confirmed = await areYouSureYouWantToPush(oldTag, newTag, newTag)
+                    if (confirmed) {
+                        await createRelease(oldTag, newTag)
+                    }
                 })();
                 break;
             case 'about':
                 ui.printAbout()
-                break;
-            case 'try':
-
-                (async() => {
-                    const remote = await gitRemoteOriginUrl()
-                    const repoUrl = githubUrlFromGit(remote)
-                    const theLog = await Utils.printCommitLog(repoUrl)
-
-                    // const oldTag = "v0.3.0"
-                    // const newTag = "v0.4.2"
-                    const oldTag = await Utils.getLatestTag()
-                    const newTag = "1.0.0" //await Utils.getNextVersionFor(oldTag, command.toLowerCase())
-
-                    const options = {
-                        oldTag,
-                        newTag,
-                        repoUrl,
-                        hasCommits: theLog.hasCommits,
-                        releaseNotes: theLog.releaseNotes(oldTag)
-                    }
-
-                    log(options.releaseNotes)
-                    releaseTaskHelper(options)
-                })();
                 break;
             case 'version':
                 log(`Current version is ${Chalk.green(pkg.version)}`)
                 break;
             default:
                 (async() => {
-                    var oldVersion = await Utils.getLatestTag()
-                    ui.initialPrompt(oldVersion)
-                    const { newTag, message } = await ui.askForValidNewTag(oldVersion);
-                    await areYouSureYouWantToPush(oldVersion, newTag, message)
+                    var oldTag = await Utils.getLatestTag()
+                    ui.initialPrompt(oldTag)
+                    const { newTag, message } = await ui.askForValidNewTag(oldTag);
+                    const confirmed = await areYouSureYouWantToPush(oldTag, newTag, message)
+                    if (confirmed) {
+                        await createRelease(oldTag, newTag)
+                    }
                 })()
         }
     }

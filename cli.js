@@ -3,7 +3,7 @@
 'use strict';
 
 const meow = require('meow');
-const router = require('./src/router');
+const core = require('./src/core');
 const updateNotifier = require('update-notifier');
 const pkg = require('./package.json');
 
@@ -36,5 +36,5 @@ Usage
 if (cli.input.length > 0 && cli.input[0] == "help") {
     cli.showHelp(2);
 } else {
-    router.init(cli.input, cli.flags);
+    core.init(cli.input, cli.flags);
 }

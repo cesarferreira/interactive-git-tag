@@ -6,7 +6,6 @@ const Utils = require('./utils');
 const version = require('./version');
 
 module.exports = async(options) => {
-
     const url = newGithubReleaseUrl({
         repoUrl: options.repoUrl,
         tag: options.newTag,
