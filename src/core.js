@@ -33,14 +33,14 @@ async function createRelease(oldTag, newTag) {
 
     const remote = await gitRemoteOriginUrl()
     const repoUrl = githubUrlFromGit(remote)
-    const theLog = await Utils.printCommitLog(repoUrl)
+    const { hasCommits, releaseNotes } = await Utils.printCommitLog(repoUrl, oldTag, newTag);
 
     const options = {
         oldTag,
         newTag,
         repoUrl,
-        hasCommits: theLog.hasCommits,
-        releaseNotes: theLog.releaseNotes(oldTag)
+        hasCommits,
+        releaseNotes: releaseNotes(newTag) //oldTag,
     }
 
     await Utils.releaseTaskHelper(options)

@@ -2,7 +2,6 @@
 
 'use strict';
 
-const chalk = require('chalk');
 const log = console.log;
 const semver = require('semver')
 const version = require('./version');
@@ -80,9 +79,10 @@ const self = module.exports = {
             return terminalLink(issue, `https://github.com/${issuePart}`);
         });
     },
-    printCommitLog: async(repoUrl) => {
-        const latest = await git.latestTagOrFirstCommit();
-        const commitLog = await git.commitLogFromRevision(latest);
+    printCommitLog: async(repoUrl, oldTag, newTag) => {
+        // const latest = await git.latestTagOrFirstCommit();
+        // log(latest)
+        const commitLog = await git.commitLogFromRevision(oldTag);
 
         if (!commitLog) {
             return {
@@ -108,9 +108,9 @@ const self = module.exports = {
 
         const releaseNotes = nextTag => commits.map(commit =>
             `- ${commit.message}  ${commit.id}`
-        ).join('\n') + `\n\n${repoUrl}/compare/${latest}...${nextTag}`;
+        ).join('\n') + `\n\n${repoUrl}/compare/${oldTag}...${nextTag}`;
 
-        const commitRange = self.linkifyCommitRange(repoUrl, `${latest}...master`);
+        const commitRange = self.linkifyCommitRange(repoUrl, `${oldTag}...master`);
 
         // log(`${chalk.bold('Commits:')}\n${history}\n\n${chalk.bold('Commit Range:')}\n${commitRange}\n`);
 
