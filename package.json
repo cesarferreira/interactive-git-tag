@@ -1,6 +1,6 @@
 {
     "name": "interactive-git-tag",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "Tool that helps with your git tagging",
     "author": {
         "name": "Cesar Ferreira",
