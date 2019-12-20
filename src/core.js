@@ -81,6 +81,12 @@ module.exports = {
                         oldTag,
                         command.toLowerCase()
                     );
+
+                    log()
+                    log(chalk.white.bold("Commits:"))
+                    const releaseNotes = await getReleaseNotes(await Utils.getLatestTag(), newTag)
+                    log(releaseNotes.substring(0, releaseNotes.lastIndexOf("\n")))
+
                     const confirmed = await areYouSureYouWantToPush(
                         oldTag,
                         newTag,
@@ -102,6 +108,7 @@ module.exports = {
                 (async() => {
                     const releaseNotes = await getReleaseNotes(await Utils.getLatestTag(), "HEAD")
 
+                    log()
                     log(chalk.white.bold("Commits:"))
                     log(releaseNotes)
                 })();
@@ -110,7 +117,7 @@ module.exports = {
                 (async() => {
                     var oldTag = await Utils.getLatestTag();
                     ui.initialPrompt(oldTag);
-                    // x.substring(0, x.lastIndexOf("\n"));
+
                     log(chalk.white.bold("Commits:"))
                     const releaseNotes = await getReleaseNotes(await Utils.getLatestTag(), "HEAD")
                     log(releaseNotes.substring(0, releaseNotes.lastIndexOf("\n")))

@@ -36,6 +36,7 @@ Usage
     $ tag prepatch
     $ tag premajor
     $ tag prerelease
+    $ tag commits | notes # shows the list of commits since the last tag was pushed
     
 ```
 
