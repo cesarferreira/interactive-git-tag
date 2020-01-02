@@ -66,8 +66,9 @@ module.exports = {
     init: (input, flags) => {
         const command = input[0] || "";
         const params = input.subarray(1, input.length);
+        const firstParameter = command.toLowerCase()
 
-        switch (command.toLowerCase()) {
+        switch (firstParameter) {
             case "major":
             case "minor":
             case "patch":
@@ -77,10 +78,7 @@ module.exports = {
             case "prerelease":
                 (async() => {
                     const oldTag = await Utils.getLatestTag();
-                    const newTag = await Utils.getNextVersionFor(
-                        oldTag,
-                        command.toLowerCase()
-                    );
+                    const newTag = await Utils.getNextVersionFor(oldTag, firstParameter);
 
                     log()
                     log(chalk.white.bold("Commits:"))
@@ -106,11 +104,35 @@ module.exports = {
             case "releasenotes":
             case "notes":
                 (async() => {
-                    const releaseNotes = await getReleaseNotes(await Utils.getLatestTag(), "HEAD")
 
-                    log()
-                    log(chalk.white.bold("Commits:"))
-                    log(releaseNotes)
+                    var from = ''
+                    var to = ''
+
+                    if (params.length < 1) {
+                        from = await Utils.getLatestTag()
+                        to = "HEAD"
+                    } else if (params.length == 1) {
+                        from = params[0]
+                        to = "HEAD"
+                    } else {
+                        from = params[0]
+                        to = params[1]
+                    }
+
+                    try {
+
+                        const releaseNotes = await getReleaseNotes(from, to)
+
+                        log()
+                        if (releaseNotes == "") {
+                            log(chalk.yellow.bold(`No commits between ${from} and ${to}`))
+                        } else {
+                            log(chalk.white.bold("Commits:"))
+                            log(releaseNotes)
+                        }
+                    } catch (error) {
+                        log(error.stderr)
+                    }
                 })();
                 break;
             default:
@@ -118,8 +140,13 @@ module.exports = {
                     var oldTag = await Utils.getLatestTag();
                     ui.initialPrompt(oldTag);
 
-                    log(chalk.white.bold("Commits:"))
                     const releaseNotes = await getReleaseNotes(await Utils.getLatestTag(), "HEAD")
+
+                    if (releaseNotes == "") {
+                        log(chalk.yellow.bold("No commits since the last tag"))
+                    } else {
+                        log(chalk.white.bold("Commits:"))
+                    }
                     log(releaseNotes.substring(0, releaseNotes.lastIndexOf("\n")))
 
                     const { newTag, message } = await ui.askForValidNewTag(oldTag);
