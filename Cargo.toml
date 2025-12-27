@@ -1,0 +1,25 @@
+[package]
+name = "interactive-git-tag"
+version = "1.1.0"
+edition = "2021"
+description = "Tool that helps with your git tagging"
+license = "MIT"
+authors = ["Cesar Ferreira <cesar.manuel.ferreira@gmail.com>"]
+repository = "https://github.com/cesarferreira/interactive-git-tag"
+
+[[bin]]
+name = "tag"
+path = "src/main.rs"
+
+[dependencies]
+anyhow = "1.0"
+console = "0.15"
+dialoguer = "0.11"
+indicatif = "0.17"
+open = "5.0"
+semver = "1.0"
+url = "2.5"
+
+[dev-dependencies]
+serial_test = "3.0"
+tempfile = "3.10"
