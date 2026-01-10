@@ -1,5 +1,7 @@
-// 'use strict';
-const semver = require('semver');
+import semver from 'semver';
+
+export const SEMVER_INCREMENTS = ['patch', 'minor', 'major', 'prepatch', 'preminor', 'premajor', 'prerelease'];
+export const PRERELEASE_VERSIONS = ['prepatch', 'preminor', 'premajor', 'prerelease'];
 
 class Version {
     constructor(version) {
@@ -11,49 +13,59 @@ class Version {
     }
 
     satisfies(range) {
-        module.exports.validate(this.version);
+        validate(this.version);
         return semver.satisfies(this.version, range, {
             includePrerelease: true
         });
     }
 
     getNewVersionFrom(input) {
-        module.exports.validate(this.version);
-        if (!module.exports.isValidInput(input)) {
-            throw new Error(`Version should be either ${module.exports.SEMVER_INCREMENTS.join(', ')} or a valid semver version.`);
+        validate(this.version);
+        if (!isValidInput(input)) {
+            throw new Error(`Version should be either ${SEMVER_INCREMENTS.join(', ')} or a valid semver version.`);
         }
 
-        return module.exports.SEMVER_INCREMENTS.includes(input) ? semver.inc(this.version, input) : input;
+        return SEMVER_INCREMENTS.includes(input) ? semver.inc(this.version, input) : input;
     }
 
     isGreaterThanOrEqualTo(otherVersion) {
-        module.exports.validate(this.version);
-        module.exports.validate(otherVersion);
+        validate(this.version);
+        validate(otherVersion);
 
         return semver.gte(otherVersion, this.version);
     }
 
     isLowerThanOrEqualTo(otherVersion) {
-        module.exports.validate(this.version);
-        module.exports.validate(otherVersion);
+        validate(this.version);
+        validate(otherVersion);
 
         return semver.lte(otherVersion, this.version);
     }
 }
 
-module.exports = version => new Version(version);
-
-module.exports.SEMVER_INCREMENTS = ['patch', 'minor', 'major', 'prepatch', 'preminor', 'premajor', 'prerelease'];
-module.exports.PRERELEASE_VERSIONS = ['prepatch', 'preminor', 'premajor', 'prerelease'];
-
-module.exports.isPrereleaseOrIncrement = input => module.exports(input).isPrerelease() || module.exports.PRERELEASE_VERSIONS.includes(input);
-
 const isValidVersion = input => Boolean(semver.valid(input));
 
-module.exports.isValidInput = input => module.exports.SEMVER_INCREMENTS.includes(input) || isValidVersion(input);
+export const isValidInput = input => SEMVER_INCREMENTS.includes(input) || isValidVersion(input);
 
-module.exports.validate = version => {
+export const validate = version => {
     if (!isValidVersion(version)) {
         throw new Error('Version should be a valid semver version.');
     }
 };
+
+export const isPrereleaseOrIncrement = input => createVersion(input).isPrerelease() || PRERELEASE_VERSIONS.includes(input);
+
+export function createVersion(version) {
+    return new Version(version);
+}
+
+// Minimum git version requirements (stub - the original didn't actually implement this)
+export function verifyRequirementSatisfied(tool, installedVersion) {
+    // Minimum git version requirement - not strictly enforced
+    const minGitVersion = '2.11.0';
+    if (tool === 'git' && semver.lt(installedVersion, minGitVersion)) {
+        throw new Error(`Please upgrade git to version ${minGitVersion} or higher`);
+    }
+}
+
+export default createVersion;

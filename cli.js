@@ -1,11 +1,15 @@
 #!/usr/bin/env node
 
-'use strict';
+import meow from 'meow';
+import updateNotifier from 'update-notifier';
+import { readFileSync } from 'fs';
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
+import { init } from './src/core.js';
 
-const meow = require('meow');
-const core = require('./src/core');
-const updateNotifier = require('update-notifier');
-const pkg = require('./package.json');
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+const pkg = JSON.parse(readFileSync(join(__dirname, 'package.json'), 'utf8'));
 
 updateNotifier({ pkg }).notify();
 
@@ -31,14 +35,17 @@ Usage
     $ tag notes 0.5.1         # shows the list of commits between 0.5.1 and HEAD
   
 `, {
-    alias: {
-        v: 'version'
-    },
-    boolean: ['version']
+    importMeta: import.meta,
+    flags: {
+        version: {
+            type: 'boolean',
+            shortFlag: 'v'
+        }
+    }
 });
 
-if (cli.input.length > 0 && cli.input[0] == "help") {
+if (cli.input.length > 0 && cli.input[0] === "help") {
     cli.showHelp(2);
 } else {
-    core.init(cli.input, cli.flags);
+    init(cli.input, cli.flags);
 }
