@@ -6,12 +6,26 @@ import { getCurrentFolderName } from './utils.js';
 
 const log = console.log;
 
+// Helper to handle graceful exit on Ctrl+C
+function handlePromptError(error) {
+    // Check by error name since ExitPromptError may not be directly importable
+    if (error.name === 'ExitPromptError' || error.message?.includes('force closed')) {
+        log('\n');
+        process.exit(0);
+    }
+    throw error;
+}
+
 export async function askForConfirmation(oldVersion, newVersion) {
-    const result = await confirm({
-        message: `Will bump from ${chalk.bold.green(oldVersion)} to ${chalk.bold.green(newVersion)}. Continue?`,
-        default: true
-    });
-    return { confirm: result };
+    try {
+        const result = await confirm({
+            message: `Will bump from ${chalk.bold.green(oldVersion)} to ${chalk.bold.green(newVersion)}. Continue?`,
+            default: true
+        });
+        return { confirm: result };
+    } catch (error) {
+        handlePromptError(error);
+    }
 }
 
 export function failsToConfirm() {
@@ -33,55 +47,59 @@ export function tagPushSuccessMessage(newVersion) {
 }
 
 export async function askForValidNewTag(oldVersion) {
-    const choices = SEMVER_INCREMENTS.map(inc => ({
-        name: `${inc} \t${prettyVersionDiff(oldVersion, inc)}`,
-        value: inc
-    }));
+    try {
+        const choices = SEMVER_INCREMENTS.map(inc => ({
+            name: `${inc} \t${prettyVersionDiff(oldVersion, inc)}`,
+            value: inc
+        }));
 
-    choices.push(new Separator());
-    choices.push({
-        name: 'Other (specify)',
-        value: 'other'
-    });
-
-    const selectedVersion = await select({
-        message: 'Select semver increment or specify new version',
-        choices,
-        pageSize: SEMVER_INCREMENTS.length + 2
-    });
-
-    let newTag;
-
-    if (selectedVersion === 'other') {
-        newTag = await input({
-            message: 'Version',
-            validate: (inputValue) => {
-                if (!isValidInput(inputValue)) {
-                    return 'Please specify a valid semver, for example, `1.2.3`. See http://semver.org';
-                }
-
-                if (createVersion(oldVersion).isLowerThanOrEqualTo(inputValue)) {
-                    return `Version must be greater than ${oldVersion}`;
-                }
-
-                return true;
-            }
+        choices.push(new Separator());
+        choices.push({
+            name: 'Other (specify)',
+            value: 'other'
         });
-        // If it's a semver increment, compute the new version
-        if (SEMVER_INCREMENTS.includes(newTag)) {
-            newTag = createVersion(oldVersion).getNewVersionFrom(newTag);
+
+        const selectedVersion = await select({
+            message: 'Select semver increment or specify new version',
+            choices,
+            pageSize: SEMVER_INCREMENTS.length + 2
+        });
+
+        let newTag;
+
+        if (selectedVersion === 'other') {
+            newTag = await input({
+                message: 'Version',
+                validate: (inputValue) => {
+                    if (!isValidInput(inputValue)) {
+                        return 'Please specify a valid semver, for example, `1.2.3`. See http://semver.org';
+                    }
+
+                    if (createVersion(oldVersion).isLowerThanOrEqualTo(inputValue)) {
+                        return `Version must be greater than ${oldVersion}`;
+                    }
+
+                    return true;
+                }
+            });
+            // If it's a semver increment, compute the new version
+            if (SEMVER_INCREMENTS.includes(newTag)) {
+                newTag = createVersion(oldVersion).getNewVersionFrom(newTag);
+            }
+        } else {
+            newTag = createVersion(oldVersion).getNewVersionFrom(selectedVersion);
         }
-    } else {
-        newTag = createVersion(oldVersion).getNewVersionFrom(selectedVersion);
+
+        const message = await input({
+            message: 'What message should the tag have',
+            default: newTag
+        });
+
+        return {
+            newTag,
+            message
+        };
+    } catch (error) {
+        handlePromptError(error);
     }
-
-    const message = await input({
-        message: 'What message should the tag have',
-        default: newTag
-    });
-
-    return {
-        newTag,
-        message
-    };
 }
